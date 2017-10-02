@@ -9,14 +9,17 @@
 
 ## 노드 구현하기
 - linked list는 노드로 구성된다. 먼저 기본적인 노드 클래스를 만들자.
+
 ```swift
 public class Node {
 
 }
 ```
 
+
 ### Value
 - 노드는 값을 갖는다. 노드 클래스 안에 다음을 추가하자
+
 ```swift
 var value: String
 
@@ -28,6 +31,7 @@ init(value: String) {
 
 ### Next
 - 노드는 value 이외에도 다음 노드를 참조하는 포인터를 갖는다.
+
 ```swift
 var next: Node?
 ```
@@ -35,6 +39,7 @@ var next: Node?
 
 ### Previous
 - doubly linked list는 이전 노드의 참조를 갖는 포인터 또한 필요하다
+
 ```swift
 weak var previous: Node?
 ```
@@ -43,6 +48,7 @@ weak var previous: Node?
 
 ## Linked list 구현하기
 - 위에서 노드를 만들었으니 이를 활용해서 linked list를 만들자
+
 ```swift
 public class LinkedList {
     fileprivate var head: Node?
@@ -65,6 +71,7 @@ public class LinkedList {
 
 ### append
 - 리스트에 새로운 노드 추가할 때 append(value:) 메소드를 사용한다
+
 ```swift
 public func append(value: String) {
     let newNode = Node(value: value)
@@ -94,10 +101,12 @@ dogBreeds.append(value: "Husky")
 print(dogBreeds)
 ```
 - 콘솔에 다음과 같이 출력될 것이다
+
 ```swift
 LinkedList
 ```
-- 좀 더 리스트를 자세히 파악하기 위해 리스트에 CustomStringConvertable 프로토콜을 적용하자. 
+- 좀 더 리스트를 자세히 파악하기 위해 리스트에 CustomStringConvertable 프로토콜을 적용하자.
+
 ```swift
 extension LinkedList: CustomStringConvertible {
 
@@ -121,12 +130,14 @@ extension LinkedList: CustomStringConvertible {
 - 3. text 변수를 선언했다. 이것은 리스트의 모든 노드가 갖는 value를 모을 것이다
 - 4. 반복문을 돌면서 노드의 value를 text에 추가한다
 - 5. text 변수를 닫는다
+
 ```swift
 "[Labrador, Bulldog, Beagle, Husky]"
 ```
 
 ## 특정 node에 접근하기
 - index를 이용해서 링크드 리스트의 노드에 접근해보자
+
 ```swift
 public func nodeAt(index: Int) -> Node? {
 
@@ -150,6 +161,7 @@ public func nodeAt(index: Int) -> Node? {
 
 ## 노드 전부 삭제하기
 - 모든 노드를 제거하는 것은 쉽다. head와 tail을 nil 로 지정하면 된다
+
 ```swift
 public func removeAll() {
     head = nil
@@ -161,6 +173,7 @@ public func removeAll() {
 - 1. 첫번째 노드를 삭제하는 경우: head, previous 를 업데이트 해야한다
 - 2. 중간 노드를 삭제하는 경우: previous, next를 업데이트 해야한다
 - 3. 마지막 노드를 삭제하는 경우: next, tail 업데이트 해야한다
+
 ```swift
 public func remove(node: Node) -> String {
 
@@ -197,6 +210,7 @@ public func remove(node: Node) -> String {
 
 ## 제네릭
 - 지금까지 String 값을 담는 linked list를 살펴보았다. 그리고 append, remove, access 메소드를 만들었다. 이번에는 제네릭을 사용해 임의의 타입을 담을 수 있는 Linked list로 변경해보자
+
 ```swift
 public class Node<T> {
 
@@ -211,6 +225,7 @@ public class Node<T> {
 ```
 - 노드 클래스를 제네릭 타입으로 변경했다
 - 이번에는 링크드리스트에 제네릭 타입을 적용해보자
+
 ```swift
 // 1. Change the declaration of the Node class to take a generic type T
 public class LinkedList<T> {
@@ -287,6 +302,7 @@ public class LinkedList<T> {
 }
 ```
 - 다음 테스트 코드를 넣어 잘 동작하는지 확인해보자
+
 ```swift
 let dogBreeds = LinkedList<String>()
 dogBreeds.append(value: "Labrador")

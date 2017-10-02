@@ -21,6 +21,7 @@
 - observable을 사용하면 delegate 프로토콜이나 클로저를 사용하지 않고도 클래스간 의사소통을 가능하게 해준다.
 
 - finite observable sequence: 특정 작업이 완료될때까지만 관찰하면 되는 것. 예를 들어 인터넷에서 파일을 다운로드한다고 가정해보자. 다운로드를 시작하고 데이터를 받는다. 네트워크 연결이 약해지는 상황에서 다운로드가 멈추고 연결은 에러와 함께 끊길 것이다. 또는 데이터 다운이 완료되면 success와 함께 마칠 것이다.
+
 ```swift
 API.download(file: "http://www...")
     .subscribe(onNext: { data in
@@ -36,6 +37,7 @@ API.download(file: "http://www...")
 ```
 
 - infinite observable sequence: 완료 시점 없이 계속 관찰해야 하는 것. 예를 들어 디바이스 화면 회전에 반응하는 것은 언제 끝날지 모르는 작업이므로 계속 지켜봐야 함. 관찰 시작시점부터 초기값이 존재한다.
+
 ```swift
 UIDevice.rx.orientation
     .subscribe(onNext: { current in
@@ -47,9 +49,11 @@ UIDevice.rx.orientation
         }
     })
 ```
+
 - 위 이벤트의 경우 종료되지 않으므로 onError, onCompleted 생략한다
 
 ## 2. operator
+
 ```swift
 UIDevice.rx.orientation
     .filter { value in
@@ -62,6 +66,7 @@ UIDevice.rx.orientation
         showAlert(test: string)
     })
 ```
+
 - UIDevice.rx.orientation이 .landscape 또는 .portrait 값을 반환할때 마다 Rx는 filter, map 연산자를 데이터에 적용할 것이다. filter 연산자는 .landscape가 아닌 값만 통과시킨다. 만약 디바이스가 landscape 모드라면 하위 코드는 실행되지 않는다. .portrait 값이라면 map 연산자를 만나 Orientation 타입의 입력값을 받아 String 타입을 출력한다. 마지막으로 subscribe가 위 문자열을 받아서 알림창에 띄운다.
 - 연산자들은 서로 퍼즐처럼 결합하여 서로 입력값과 출력값이 된다. 따라서 하나의 연산자가 할 수 있는 기능을 넘어 여러 조합으로 다양한 결과를 도출할 수 있다. 앞으로 비동기 작업과 연관된 복잡한 연산자들을 배울 것이다.
 
@@ -79,12 +84,14 @@ UIDevice.rx.orientation
 ## RxCocoa
 - RxSwift는 공통된 Rx api 구현체이므로 Cocoa나 UIkit 클래스에 대해 알지 못한다. RxCocoa 는 UIKit과 Cocoa 를 위한 개발을 돕는 클래스를 포함하는 라이브러리이다. RxCocoa는 UI 에 reactive extension을 추가하여 다양한 UI events를 구독할 수 있다.
 예를 들어 RxCocoa를 사용하면 UISwitch의 상태변화를 구독하기 쉽다
+
 ```swift
 toggleSwitch.rx.isOn
     .subscribe(onNext: { enabled in
         print( enabled ? "it's on" : "it's off" )
     })
 ```
+
 - RxCocoa는 UISwitch 클래스에 rx.isOn 프로퍼티를 추가하여 유용한 이벤트를 구독할 수 있게 해준다. 게다가 UITextField, URLSession, UIViewController 등에도 rx를 추가할 수 있다.
 
 ## 마무리

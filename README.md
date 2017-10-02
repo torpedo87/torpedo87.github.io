@@ -5,4 +5,6 @@
 
 # JD
 ## RxSwift
-- RxSwift [chapter 1](JD/hello-rxswift.md) [chapter 2](JD/observables.md)
+- [chapter 1](JD/hello-rxswift.md) 
+- [chapter 2](JD/observables.md)
+- [chapter 3](JD/subjects.md)

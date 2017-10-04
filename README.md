@@ -3,6 +3,10 @@
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)
 - merge sort [read](algorithm/swift-merge-sort.md)
+- insertion sort
+- quick sort
+- binary tree
+- red-black tree
 
 # JD
 ## RxSwift

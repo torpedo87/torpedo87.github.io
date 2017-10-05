@@ -10,7 +10,8 @@
 
 # JD
 ## RxSwift
-- hello RxSwift [chapter 1](JD/hello-rxswift.md) 
+- hello RxSwift [chapter 1](JD/hello-rxswift.md)
 - observables [chapter 2](JD/observables.md)
 - subjects [chapter 3](JD/subjects.md)
 - observable and subject in practice [chapter 4](JD/observables-and-subjects-in-practice.md)
+- filtering operators [chapter 5](JD/filtering-operators.md)

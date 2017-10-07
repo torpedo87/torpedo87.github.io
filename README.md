@@ -15,3 +15,4 @@
 - filtering operators [chapter 5](JD/filtering-operators.md)
 - filtering operators in practice [chapter 6](JD/filtering-operators-in-practice.md)
 - transforming operators [chapter 7](JD/transforming-operators.md)
+- transforming operators in practice [chapter 8](JD/transforming-operators-in-practice.md)

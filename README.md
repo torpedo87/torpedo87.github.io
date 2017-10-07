@@ -14,3 +14,4 @@
 - observable and subject in practice [chapter 4](JD/observables-and-subjects-in-practice.md)
 - filtering operators [chapter 5](JD/filtering-operators.md)
 - filtering operators in practice [chapter 6](JD/filtering-operators-in-practice.md)
+- transforming operators [chapter 7](JD/transforming-operators.md)

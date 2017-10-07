@@ -341,8 +341,10 @@ example(of: "distinctUntilChanged(_:)") {
     Observable<NSNumber>.of(10, 110, 20, 200, 210, 310)
         .distinctUntilChanged { a, b in
 
+            //ten
             guard let aWords = formatter.string(from: a)?
             .components(seperatedBy: " "),
+            //one, hundred, ten
             let bWords = formatter.string(from: b)?
             .components(seperatedBy: " ")
             else {
@@ -369,7 +371,7 @@ example(of: "distinctUntilChanged(_:)") {
 }
 ```
 
-- 1. 숫자를 하나씩 추출하는 formatter 생성
+- 1. 숫자를 문자로 읽는 formatter 생성
 - 2. observable 생성
 - 3. distinctUntilChanged 연산자를 사용해서 연속된 한 쌍의 원소를 받는다
 - 4. 빈칸을 기준으로 원소를 분리하기

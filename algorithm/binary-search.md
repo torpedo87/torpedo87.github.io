@@ -32,4 +32,4 @@ func binarySearch<T: Comparable>(_ arr: [T], target: T) -> Int? {
 ## 빅오 표기법
 - O(연산횟수)
 - 크기에 따른 최악의 실행횟수를 나타낸다
-- 실행횟수: log n < n < n * log n < n제곱 < n!
+- 실행횟수: log n < n < n * log n < n*n < n!

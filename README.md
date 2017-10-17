@@ -1,6 +1,7 @@
 # algorithm
 - 이진 탐색 [read](algorithm/binary-search.md)
 - 선택정렬 [read](algorithm/selection-sort.md)
+- 재귀 [read](algorithm/recursive.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)

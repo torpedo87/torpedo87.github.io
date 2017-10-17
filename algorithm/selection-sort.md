@@ -11,8 +11,10 @@
 
 # 선택정렬
 - 배열을 작은 정수부터 큰 정수 순서로 정렬하기
+- O(n*n)
 
 ```swift
+//제일 작은 수 찾는데 n번 돌기
 func findSmallest(arr: [Int]) -> Int {
     let smallest = arr[0]
     let smallestIndex = 0
@@ -27,6 +29,7 @@ func findSmallest(arr: [Int]) -> Int {
     return smallestIndex
 }
 
+//정렬하는데 n번 돌기
 func selectionSort(arr: [Int]) -> Int {
     let newArr = [Int]()
     

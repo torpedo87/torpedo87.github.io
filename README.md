@@ -1,10 +1,11 @@
 # algorithm
+- 이진 탐색 [read](algorithm/binary-search.md)
+- 선택정렬 [read](algorithm/selection-sort.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)
 - merge sort [read](algorithm/swift-merge-sort.md)
 - tree [read](algorithm/swift-tree-data-structure.md)
-- 이진탐색 [read](algorithm/binary-search.md)
 
 
 # JD

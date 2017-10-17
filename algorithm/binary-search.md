@@ -6,7 +6,7 @@
 ## 전제조건
 - 정렬이 되어 있어야 한다.
  
- ## 반복문으로 구현
+## 반복문으로 구현
 
  ```swift
 func binarySearch<T: Comparable>(_ arr: [T], target: T) -> Int? {

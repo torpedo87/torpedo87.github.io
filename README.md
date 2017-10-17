@@ -4,7 +4,8 @@
 - linked list [read](algorithm/swift-linked-list-data-structure.md)
 - merge sort [read](algorithm/swift-merge-sort.md)
 - tree [read](algorithm/swift-tree-data-structure.md)
-- heap and priority queue [read](algorithm/heap-and-priority-queue.md)
+- 이진탐색 [read](algorithm/binary-search.md)
+
 
 # JD
 ## RxSwift
@@ -16,3 +17,4 @@
 - filtering operators in practice [chapter 6](JD/filtering-operators-in-practice.md)
 - transforming operators [chapter 7](JD/transforming-operators.md)
 - transforming operators in practice [chapter 8](JD/transforming-operators-in-practice.md)
+- combining operators [chapter 9](JD/combining-operators.md)

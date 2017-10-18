@@ -1,8 +1,9 @@
 # algorithm
-- 이진 탐색 [read](algorithm/binary-search.md)
-- 선택정렬 [read](algorithm/selection-sort.md)
-- 재귀 [read](algorithm/recursive.md)
-- 퀵 정렬 [read](algorithm/quick-sort.md)
+- binary search [read](algorithm/binary-search.md)
+- selection sort [read](algorithm/selection-sort.md)
+- recursive [read](algorithm/recursive.md)
+- quick sort [read](algorithm/quick-sort.md)
+- hash table [read](algorithm/hash-table.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)

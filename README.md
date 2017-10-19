@@ -5,6 +5,8 @@
 - quick sort [read](algorithm/quick-sort.md)
 - hash table [read](algorithm/hash-table.md)
 - 너비 우선 탐색 [read](algorithm/breadth-first-search.md)
+- 다익스트라 알고리즘 [read](algorithm/dijkstra-algorithm.md)
+- 탐욕 알고리즘 [read](algorithm/greedy-algorithm.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)

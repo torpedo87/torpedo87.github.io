@@ -8,6 +8,7 @@
 - 다익스트라 알고리즘 [read](algorithm/dijkstra-algorithm.md)
 - 탐욕 알고리즘 [read](algorithm/greedy-algorithm.md)
 - 동적 프로그래밍 [read](algorithm/dynamic-programming.md)
+- KNN 알고리즘 [read](algorithm/knn-algorithm.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)

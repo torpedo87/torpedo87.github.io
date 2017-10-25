@@ -11,6 +11,7 @@
 - KNN 알고리즘 [read](algorithm/knn-algorithm.md)
 - 기타 [read](algorithm/extra.md)
 - 정렬 [read](algorithm/sort.md)
+- 트리 [read](algorithm/tree.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)

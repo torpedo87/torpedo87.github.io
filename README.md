@@ -1,6 +1,6 @@
 # 삼촌(Samchon)의 개발 블로그
 
-## CheckList
+## iOS CheckList by JK
 
 ### 메모리 관리
 - ARC나 수동 메모리 관리 방법에 대해서 설명할 수 있다. [go](checkList/arc.md)

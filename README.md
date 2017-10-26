@@ -2,6 +2,9 @@
 
 ## CheckList
 
+### 메모리 관리
+- ARC나 수동 메모리 관리 방법에 대해서 설명할 수 있다. [go](checkList/arc.md)
+
 ## algorithm
 - binary search [read](algorithm/binary-search.md)
 - selection sort [read](algorithm/selection-sort.md)
@@ -16,6 +19,7 @@
 - 기타 [read](algorithm/extra.md)
 - 정렬 [read](algorithm/sort.md)
 - 트리 [read](algorithm/tree.md)
+- 그래프 [read](algorithm/graph.md)
 - stack [read](algorithm/swift-stack-data-structure.md)
 - queue [read](algorithm/swift-queue-data-structure.md)
 - linked list [read](algorithm/swift-linked-list-data-structure.md)
@@ -43,4 +47,4 @@
 ## Exercise
 - GoalPost [go](https://github.com/torpedo87/GoalPost)
 - Smack [go](https://github.com/torpedo87/Smack)
-- TDDRecip [go](https://github.com/torpedo87/TDDRecipe)
+- TDDRecipe [go](https://github.com/torpedo87/TDDRecipe)

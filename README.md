@@ -1,4 +1,8 @@
-# algorithm
+# 삼촌(Samchon)의 개발 블로그
+
+## CheckList
+
+## algorithm
 - binary search [read](algorithm/binary-search.md)
 - selection sort [read](algorithm/selection-sort.md)
 - recursive [read](algorithm/recursive.md)
@@ -19,7 +23,7 @@
 - tree [read](algorithm/swift-tree-data-structure.md)
 
 
-# RxSwift
+## RxSwift
 - hello RxSwift [chapter 1](JD/hello-rxswift.md)
 - observables [chapter 2](JD/observables.md)
 - subjects [chapter 3](JD/subjects.md)
@@ -30,8 +34,13 @@
 - transforming operators in practice [chapter 8](JD/transforming-operators-in-practice.md)
 - combining operators [chapter 9](JD/combining-operators.md)
 
-# Project
+## Project
 - AutoVendingMachine [go](https://github.com/torpedo87/autovendingmachine)
 - OnTheWay [go](https://github.com/gyoungeunbae/OnTheWay)
 - Alala [go](https://github.com/team-meteor/Alala-Client)
 - ChookDuckNews [go](https://github.com/torpedo87/ChookDuckNews)
+
+## Exercise
+- GoalPost [go](https://github.com/torpedo87/GoalPost)
+- Smack [go](https://github.com/torpedo87/Smack)
+- TDDRecip [go](https://github.com/torpedo87/TDDRecipe)

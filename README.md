@@ -2,6 +2,9 @@
 
 ## iOS CheckList by JK
 
+### 스위프트
+- protocol와 extension 개념에 대해 설명할 수 있고, 어떤 경우에 활용하는지 알고 있다. [go](checkList/protocol-extension.md)
+
 ### 메모리 관리
 - ARC나 수동 메모리 관리 방법에 대해서 설명할 수 있다. [go](checkList/arc.md)
 

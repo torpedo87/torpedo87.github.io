@@ -51,3 +51,4 @@
 - GoalPost [go](https://github.com/torpedo87/GoalPost)
 - Smack [go](https://github.com/torpedo87/Smack)
 - TDDRecipe [go](https://github.com/torpedo87/TDDRecipe)
+- WhatIsThis [go](https://github.com/torpedo87/WhatIsThis)

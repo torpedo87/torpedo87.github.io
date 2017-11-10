@@ -46,6 +46,7 @@
 - OnTheWay [go](https://github.com/gyoungeunbae/OnTheWay)
 - Alala [go](https://github.com/team-meteor/Alala-Client)
 - ChookDuckNews [go](https://github.com/torpedo87/ChookDuckNews)
+- HangulTracing [go](https://github.com/torpedo87/HangulTracing)
 
 ## Exercise
 - GoalPost [go](https://github.com/torpedo87/GoalPost)

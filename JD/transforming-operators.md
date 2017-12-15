@@ -17,6 +17,7 @@ example(of: "toArray") {
 }
 ```
 
+- toArray 연산자는 원소들을 담은 하나의 배열을 포함하는 observable 로 변형해 반환
 - 1. observable 생성
 - 2. toArray 연산자 사용해서 배열 형태로 변형
 
@@ -45,6 +46,7 @@ example(of: "map") {
 }
 ```
 
+- 각 원소를 임의의 형태로 변형후 이벤트 타입으로 싸서 반환
 - 1. 숫자를 문자로 읽어주는 formatter 생성
 - 2. observable 생성
 - 3. map 을 사용
@@ -54,6 +56,31 @@ example(of: "map") {
 "four"
 "fifty six"
 ```
+
+- enumerated 연산자: 인덱스, 원소값를 포함하는 튜플형태를 갖는 observable을 반환
+-  Observable<(index: Int, element: Int)>
+
+```swift
+example(of: "enumerated and map") {
+  
+  let disposeBag = DisposeBag()
+  
+  // 1
+  Observable.of(1, 2, 3, 4, 5, 6)
+    // 2
+    .enumerated()
+    // 3
+    .map { index, integer in
+      index > 2 ? integer * 2 : integer
+    }
+    // 4
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+}
+```
+
 
 - mapWithIndex 연산자를 알아보자
 
@@ -73,6 +100,7 @@ example(of: "mapWithIndex") {
 }
 ```
 
+- mapWithIndex = enumerated + map
 - 1. observable 생성
 - 2. mapWithIndex 사용해서 index가 2를 초과하면 2를 곱하고 아니면 그냥 반환
 
@@ -115,6 +143,8 @@ example(of: "flatMap") {
 }
 ```
 
+- flatmap은 각 원소를 변형해서 그것을 포함하는 각각의 observable을 반환한다
+- flapMap은 map과 유사하지만 nil일 경우 skip을 한다. unwrapping.
 - 1. 라이언, 샬롯의 두 학생 인스턴스 생성
 - 2. 학생 타입의 source subject 생성
 - 3. flatMap 연산자를 사용해서 subject의 score에 접근한다. score는 Variable이므로 이에 대해 asObservable()을 호출한다. 여기서는 score를 변형시키지 않고 그냥 통과시킨다
@@ -165,30 +195,34 @@ ryan.score.value = 95
 ```swift
 example(of: "flatMapLatest") {
     let disposeBag = DisposeBag()
-
-    let ryan = Student(score: Variable(80))
-    let charlotte = Student(score: Variable(90))
-
-    let student = PublishSubject<Student>()
-
-    student.asObservable()
-        .flatMapLatest {
-            $0.score.asObservable()
-        }
-        .subscribe(onNext: {
-            print($0)
-        })
-        .addDisposableTo(disposeBag)
-
-    student.onNext(ryan)
-
-    ryan.score.value = 85
-
-    student.onNext(charlotte)
-
-    ryan.score.value = 95
-
-    charlotte.score.value = 100
+  
+  let ryan = Student(score: BehaviorSubject(value: 80))
+  let charlotte = Student(score: BehaviorSubject(value: 90))
+  
+  let student = PublishSubject<Student>()
+  
+  student
+    .flatMapLatest {
+      $0.score
+    }
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+  
+  //student 옵저버에게 라이언을 전달
+  student.onNext(ryan)
+  
+  //score는 subject이므로 옵저버로서 역할 가능
+  ryan.score.onNext(85)
+  
+  //student 옵저버에게 샬롯을 전달하면서 이전에 전달받은 라이언 무시
+  student.onNext(charlotte)
+  
+  // 라이언이 무시되므로 옵저버가 원소를 전달해도 observable이 받지 못함
+  ryan.score.onNext(95)
+  
+  charlotte.score.onNext(100)
 }
 ```
 
@@ -200,4 +234,69 @@ example(of: "flatMapLatest") {
 ```
 
 - flatMapLatest 연산자는 네트워킹 작업에 주로 사용된다. 사용자가 검색창에 s, w, i, f, t 를 한 글자씩 입력할 때마다 이전의 결과를 무시하고 새로운 검색을 수행하기를 원할 것이다.
+- 가장 최근의 구독만 활성화
 
+
+- materialize and dematerialize
+```swift
+example(of: "materialize and dematerialize") {
+  
+  // 1
+  enum MyError: Error {
+    
+    case anError
+  }
+  
+  let disposeBag = DisposeBag()
+  
+  // 2
+  let ryan = Student(score: BehaviorSubject(value: 80))
+  let charlotte = Student(score: BehaviorSubject(value: 100))
+  
+  let student = BehaviorSubject(value: ryan)
+  
+  // 1
+  let studentScore = student
+    .flatMapLatest {
+      $0.score.materialize()
+    }
+  
+  // 2
+  studentScore
+    // materialize 된 observable은 에러 이벤트를 방출하지 않고 우리가 원소의 error에 접근할 수 있어서 에러를 필터링 가능하게 한다
+    .filter {
+      guard $0.error == nil else {
+        print($0.error!)
+        return false
+      }
+      
+      return true
+    }
+    // 원상복구
+    .dematerialize()
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+  
+  ryan.score.onNext(85)
+  
+  //옵저버가 에러 이벤트를 전달해도 이것을 방출하지 않고 출력하고 필터링된다
+  ryan.score.onError(MyError.anError)
+  
+  ryan.score.onNext(90)
+  
+  // 4
+  student.onNext(charlotte)
+}
+```
+
+```swift
+80
+85
+anError
+100
+```
+
+- materialize: 각 원소를 Event 타입으로 변형한 것을 포함하는 observable을 반환. 반환된 observable은 절대 에러를 방출하지 않는다
+- dematerialize: 원상복구

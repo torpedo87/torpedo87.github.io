@@ -3,6 +3,8 @@
 
 - 지금까지 observable을 다루는 방법을 배웠다. 생성하고 구독하고 완료되었을 때 처리하는 방법을 배웠다. observable은 RxSwift의 기본이다. 하지만 우리는 앱을 만들 때 observable과 observer 로서 기능할 수 있는 무언가가 필요하다. 이는 Subject라고 불린다
 - 이번 챕터에서 다양한 타입의 subject에 대해 배워보자
+- Subject 타입은 obseravable 이면서 observer 도 될 수 있다.
+- Observer 는 Observable sequence에게 iteration을 적용할 수 있다
 
 ## 시작하기
 
@@ -20,6 +22,7 @@ example(of: "PublishSubject") {
 subject.onNext("Is anyone listening?")
 ```
 
+- subject는 observer 타입도 되므로 위와 같이 observer의 역할로서 observable에게 원소를 넣을 수 있다
 - subject에 새로운 단어를 넣었다. 하지만 아직 아무것도 출력되지 않는다. 옵저버가 없기 때문이다. example에 다음을 추가하여 옵저버를 만들자
 
 ```swift
@@ -29,6 +32,7 @@ let subscriptionOne = subject
     })
 ```
 
+- subject 타입은 observable 역할도 하므로 위와 같이 subscribe 연산 가능
 - 이전 챕터에서 .next 이벤트를 출력하는 것과 같은 subscription을 만들었다. 하지만 여전히 아무것도 출력되지 않는다. 재미 없으니 간략하게 다른 subject 를 알아보자
 - 여기서 PublishSubject는 오로지 현재 구독자에게만 방출한다. 이전에 무언가가 추가되었을 때 구독자가 아닌 상태였다면, 현재 구독을 하더러도 이전의 정보를 받지는 못한다. 이를 수정하기 위해 다음을 example 끝에 추가하자
 
@@ -65,6 +69,7 @@ subject.onNext("2")
 - 4. Variable: BehaviorSubject를 담아서 현재 값을 유지하고 새로운 구독자에게 최신 값을 방출
 
 ### 1. PublishSubject
+- Cancelable: 상태를 포함하는 disposable
 - 구독 시작시점부터 구독을 종료할 때 까지 새로운 이벤트를 알려주는 것이다. 마블 다이어그램에서 가장윗줄은 publish subject 이고 두번째줄과 세번째줄은 구독자이다. 위로 향하는 화살표는 구독을 나타내며 아래로 향하는 화살표는 이벤트 방출을 나타낸다.
 - 첫번째 구독자는 1 이후에 구독하므로 1은 받지 못하고 2, 3 을 받는다. 두번째 구독자는 2 이후에 구독을 시작하므로 3만 받는다
 - 예제 끝에 다음을 추가하자
@@ -315,8 +320,15 @@ subject.dispose()
 - dispose bag에 구독을 넣으면 모든 것이 취소되고 메모리에 있던 참조도 해제된다.
 - Note: ReplayMany 는 replay subject를 생성할 때 사용되는 내부타입이다
 - publish, behavior, replay subject를 사용해서 대부분의 모델링을 할 수 있다. 그래도 만약 observable 타입에게 현재 값이 무엇이냐고 묻는다면 Variable을 사용해야 한다
+- publish, replay, behavior 는 dispose 될 때 completed 이벤트를 자동적으로 방출하지 않는다
 
 ## Variable
+- behaviorSubject의 wrapper. 즉 behavioSubject를 좀 더 편하게 쓰기 위해 만든 것
+- value를 set 할 때마다 thread의 안전이 보장된 상태에서 최신값을 바꿀 수 있다
+- 에러 이벤트가 발생하지 않는다
+- 에러이벤트로 종료될 수 없으며, Variable이 deallocated 될 때 observable 시퀀스를 complete 한다
+- asObservable을 호출해야 observable 로서 기능할 수 있다
+- value 값이 set 될 때마다 observer 가 알림을 받는다. 이전 값과 같은 값이 set 되어도 알림을 받는다
 - 앞에서 언급했듯이 variable은 BehaviorSubject를 담고 현재 값을 저장한다. value 프로퍼티를 통해 현재 값에 접근할 수 있다. 다른 subject와 observable 과는 다르게, variable에 새로운 원소를 설정하기 위해 value 프로퍼티를 사용한다. 즉 onNext(_:)를 사용하지 않는다.
 - behavior subject를 담기 때문에 variable은 초기값과 함께 생성이 되며 가장 최근 값을 새로운 구독자에게 재생한다. variable 의 bahavior subject에 접근하기 위해서 asObservable()을 호출한다.
 - Variable의 또다른 특징은 에러를 방출하지 않는다는 점이다. 구독이 에러 이벤트를 들을 수 있더라도 variable에 에러 이벤트를 추가할 수 없다. variable은 또한 참조해제될 때 자동으로 종료되므로 수동으로 .completed 이벤트를 추가할 필요가 없다
@@ -329,7 +341,7 @@ example(of: "Variable") {
 
     let disposeBag = DisposeBag()
 
-    varable.value = "New initial value"
+    variable.value = "New initial value"
 
     variable.asObservable()
         .subscribe {

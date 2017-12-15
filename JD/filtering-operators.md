@@ -24,6 +24,7 @@ example(of: "ignoreElements") {
 }
 ```
 
+- ignoreElemets 연산자는 모든 element 를 skip한 observable sequence를 반환
 - 1. strkes 라는 subject 생성
 - 2. strkes의 모든 이벤트를 구독하지만 .next 이벤트는 걸러내기
 - ignoreElements 는 observable이 끝나는 시점만 알림받고 싶을 때 유용하다. 다음을 추가하자
@@ -64,6 +65,7 @@ example(of: "elementAt") {
 }
 ```
 
+- elementAt 연산자는 observable이 방출하는 n 번째 인덱스의 원소만을 갖는 observable sequence를 반환
 - 1. subject 생성
 - 2. 3번째 next 이벤트만 받고 나머지는 무시
 
@@ -98,6 +100,7 @@ example(of: "filter") {
 }
 ```
 
+- filter 연산자는 조건이 참인 원소만을 갖는 observable sequence를 반환
 - 1. 미리 정의된 정수를 갖는 observable 생성
 - 2. 홀수를 무시하기 위해 필터 연산자 사용한다.
 - 3. 이를 구독해서 필터링된 원소만을 출력한다
@@ -109,6 +112,7 @@ example(of: "filter") {
 ```
 
 ## skip 연산자
+
 - 첫번째 원소부터 시작해서 원하는 갯수의 원소를 건너뛰고 싶을 때 사용한다
 
 ```swift
@@ -124,6 +128,7 @@ example(of: "skip") {
 }
 ```
 
+- 첫번째 원소부터 시작해서 원하는 갯수의 원소를 제외한 나머지 원소를 포함하는 observable sequence를 반환
 - 1. observable 만들기
 - 2. 처음부터 3개 원소 거르고 구독 시작해서 출력
 
@@ -150,6 +155,7 @@ example(of: "skipWhile") {
 }
 ```
 
+- skipWhile 연산자는 조건이 참이 되기 전까지의 원소들을 제외한 나머지 원소를 포함하는 observable sequence를 반환
 - 1. 정수의 observable 생성
 - 2. 홀수가 방출될때까지 skip
 
@@ -177,6 +183,7 @@ example(of: "skipUntil") {
 }
 ```
 
+- 다른 observable 이 원소를 방출한 이후부터의 원소만을 포함하는 observable sequence를 반환
 - 1. 우리가 구독할 subject 만들고, 이것을 다루는 방식을 바꿔줄 trigger subject 만들기
 - 2. skipUntil을 사용해서 trigger subject가 .next 이벤트를 방출할 때까지 subject의 이벤트를 skip하기
 
@@ -217,6 +224,7 @@ example(of: "take") {
 }
 ```
 
+- 앞에서부터 연속적으로 n개의 원소를 포함하는 observable sequence를 반환
 - 1. 정수의 observable 생성
 - 2. take 연산자를 사용해서 처음 3개의 원소를 받는다
 
@@ -243,6 +251,7 @@ example(of: "takeWhileWithIndex") {
 }
 ```
 
+- 조건이 거짓이 되기 이전까지의 원소만을 포함하는 observabel sequence를 반환
 - 1. 정수의 observable 만들기
 - 2. takeWhileWithIndex 연산자를 사용해서 predicate를 만족하지 않는 값이 나올 때까지 계속 받기
 - 3. 필터링 된 원소를 구독해서 출력하기
@@ -274,6 +283,7 @@ example(of: "takeUntil") {
 }
 ```
 
+- 다른 observable이 원소를 방출하기 이전까지의 원소들을 포함하는 observable sequence를 반환
 - 1. primary subject, trigger subject 생성
 - 2. takeUntil 연산자 사용해서 trigger가 .next 이벤트를 방출할 때까지 계속 원소 받기
 - 3. subject에 원소 2개 추가
@@ -315,10 +325,12 @@ example(of: "distinctUntilChanged") {
         .subscribe(onNext: {
             print($0)
         })
-        .addDidposableTo(disposeBag)
+        .addDisposableTo(disposeBag)
 }
 ```
 
+- 연속적으로 중복되지 않는 원소만을 포함하는 observable sequence를 반환
+- 같다는 기준은 Equatable
 - 1. observable 생성
 - 2. distinctUntilChanged 연산자 사용해서 연속적인 중복을 방지
 - distinctUntilChanged는 오직 연속적인 중복만을 방지한다. 그래서 마지막 A는 무시되지 않는다. 
@@ -343,10 +355,10 @@ example(of: "distinctUntilChanged(_:)") {
 
             //ten
             guard let aWords = formatter.string(from: a)?
-            .components(seperatedBy: " "),
+            .components(separatedBy: " "),
             //one, hundred, ten
             let bWords = formatter.string(from: b)?
-            .components(seperatedBy: " ")
+            .components(separatedBy: " ")
             else {
                 return false
             }
@@ -371,6 +383,7 @@ example(of: "distinctUntilChanged(_:)") {
 }
 ```
 
+- 파라미터의 keySelector 가 중복을 판단하는 연산을 포함한다
 - 1. 숫자를 문자로 읽는 formatter 생성
 - 2. observable 생성
 - 3. distinctUntilChanged 연산자를 사용해서 연속된 한 쌍의 원소를 받는다

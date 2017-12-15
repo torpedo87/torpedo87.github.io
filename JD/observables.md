@@ -27,6 +27,10 @@ public enum Event<Element> {
 
 ## observable 생성하기
 - observable을 생성하는 데 사용하는 3가지 연산자를 알아보자
+- just: 1개의 원소만을 갖는 observable 반환
+- of: 다양한 원소를 갖는 observable 반환
+- from: array를 갖는 observable 반환
+- empty: 빈 observable 반환. 빈 observable은 complete 이벤트만 방출가능
 
 ```swift
 example(of: "just, of, from") {
@@ -61,6 +65,8 @@ let observable4 = Observable.from([one, two, three])
 - from 연산자는 오직 배열만을 담는 연산자로서 배열 안의 원소만을 타입추론한다. 따라서 추론된 타입은 [Int]가 아니라 Int 이다.
 
 ## observable 구독하기
+- subscribe 는 Disposable을 반환한다
+- observable 시퀀스에 대한 element handler, error handelr, completion handler, disposed handler를 설정한다. 즉 observalbe 이 어떠한 이벤트를 방출할 때에 그 이벤트의 종류에 따른 반응을 설정해준다
 - ios 개발자로서 notificationcenter 에 익숙할 것이다. 이것은 observer에게 신호를 보내는데 이것은 RxSwift의 observable과 다른점이다. 다음 UIKeyboardDidChangeFrame 예제를 살펴보자.
 
 ```swift
@@ -184,6 +190,7 @@ example(of: "never") {
 }
 ```
 
+- 종료되지 않는 observable을 반환. 이 observable의 observer는 절대 호출되지 않는다
 - 위의 경우 아무것도 출력되지 않는다.
 - 이번에는 영역의 값으로부터 observable 을 생성하는 것을 알아보자.
 
@@ -203,12 +210,14 @@ example(of: "range") {
 }
 ```
 
+- 해당 영역의 원소를 포함하는 observable을 반환한다. 원소를 방출하는 시점을 정해주는 스케줄러가 default 이면 구독을 시작할 때 즉시 observable이 원소를 방출한다.
 - 1. range 연산자를 사용해 observable을 생성했다.
 - 2. n번째 피보나치 수를 계산하고 출력한다
 - 위의 예제에서 onNext 핸들러를 사용하는 것보다 더 좋은 방법이 있는데 이는 7장에서 다루기로 하자.
 - never() 연산자를 제외하고는 자동으로 .completed 이벤트를 방출하고 정상종료한다.
 
 ## 버리기(취소), 종료하기
+- Disposable 타입을 버리기. 구독을 해지하기
 - observable은 구독하기 전에는 아무것도 할 수 없다. 구독을 하면 에러 이벤트나 완료이벤트 발생 전 혹은 정상종료 전까지 이벤트를 방출한다. 구독을 취소해서 수동으로 observable을 종료할 수도 있다
 
 ```swift
@@ -245,7 +254,7 @@ example(of: "DisposeBag") {
         .addDisposableTo(disposeBag)
 }
 ```
-
+- 구독을 수동으로 해지하지 않아도 observable 을 disposebag에 담아두면 deinit 시에 자동으로 구독이 해지된다. 즉 ARC 기능과 유사
 - 1. dispose bag 만들기
 - 2. observable 만들기
 - 3. observable 구독하고 이벤트 출력하기
@@ -264,6 +273,11 @@ example(of: "create") {
 }
 ```
 
+- create 연산자는 파라미터로 subscribe 클로저를 포함한다 이 클로저는 Disposable을 반환하며 create는 observable을 반환한다
+- 즉 observable을 구독할 때마다 create의 클로저가 호출된다
+- subscribe 파라미터는 observer로 하여금 앞으로 생성할 observable에 미리 이벤트를 넣어놓는다.
+- observable을 생성할 때 사전에 미리 observer를 이용해서 observable이 방출할 원소를 정해둔 후에 observable을 생성하는 방식
+- 위에서 살펴본 of 연산자랑 create 연산자가 반환하는 observable의 차이가 뭔지 잘 모르겠음
 - create 연산자는 subscribe 파라미터를 갖는다. observable에 대해 subscribe를 호출하는 것을 담당한다. 다시맗하면 방출될 모든 이벤트를 설명한다.
 - subscribe 파라미터는 AnyObserver 를 갖는 탈출클로저이며 Disposable을 반환한다. AnyObserver는 observable에 값을 넣는 제네릭 타입이며 방출될 것이다. 
 
@@ -384,6 +398,7 @@ example(of: "deferred") {
 }
 ```
 
+- deffered 연산자는 새로운 observer가 구독을 시작할 때마다 특정 factory function을 거쳐서 조건에 맞는 observable을 반환한다
 - 어떤 observable을 반환할지 결정하는 flip Bool값 생성
 - deferred 연산자를 사용해서 observable factory 생성
 - flip 상태가 바뀐다. factory가 구독될 때 flip 상태가 사용된다
@@ -408,3 +423,79 @@ for _ in 0...3 {
 123
 456
 ```
+
+
+# Typealiase
+
+## Single 타입
+- Represents a push style sequence containing 1 element.
+- Single 은 한개의 원소를 포함하는 observable sequence
+- create 연산자를 사용해 observable을 반환
+
+
+```swift
+example(of: "Single") {
+  
+  // 1
+  let disposeBag = DisposeBag()
+  
+  // 2
+  enum FileReadError: Error {
+    case fileNotFound, unreadable, encodingFailed
+  }
+  
+  // 3
+  func loadText(from filename: String) -> Single<String> {
+    // 4
+    return Single.create { single in
+      // 1
+      let disposable = Disposables.create()
+      
+      // 2
+      guard let path = Bundle.main.path(forResource: filename, ofType: "txt") else {
+        single(.error(FileReadError.fileNotFound))
+        return disposable
+      }
+      
+      // 3
+      guard let data = FileManager.default.contents(atPath: path) else {
+        single(.error(FileReadError.unreadable))
+        return disposable
+      }
+      
+      // 4
+      guard let contents = String(data: data, encoding: .utf8) else {
+        single(.error(FileReadError.encodingFailed))
+        return disposable
+      }
+      
+      // 5
+      single(.success(contents))
+      
+      // 6
+      return disposable
+    }
+  }
+  
+  // 1
+  loadText(from: "Copyright")
+    // 2
+    .subscribe {
+      // 3
+      switch $0 {
+      case .success(let string):
+        print(string)
+      case .error(let error):
+        print(error)
+      }
+    }
+    .disposed(by: disposeBag)
+}
+
+```
+
+## Maybe 타입
+- Represents a push style sequence containing 0 or 1 element.
+
+## Completable 타입
+- Represents a push style sequence containing 0 elements.

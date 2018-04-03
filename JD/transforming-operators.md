@@ -26,6 +26,10 @@ example(of: "toArray") {
 ```
 
 - map 연산자도 살펴보자
+- O<(Int, [Cat])> -> map(rx) -> O<[Cat]>
+- [Cat] -> map(swift) -> [Cat]
+- swift의 map 연산자는 컬렉션 타입일 때에만 사용가능하나 rx에서는 observable 자체가 시퀀스이므로 컬렉션이 아니더라도 적용 가능
+- observable 시퀀스의 원소를 변형
 
 ```swift
 example(of: "map") {
@@ -122,6 +126,9 @@ struct Student {
 ```
 
 - flat map 연산자를 알아보자
+ - 클로저는 Observable을 반환
+ - flatmap은 Observalbe< O.E > 를 반환하는데 여기서 O.E는 클로저에서 반환한 Observable의 Element를 나타낸다
+- map 연산자는 단순히 observable 시퀀스의 원소를 변형만 했지만, flat map은 각 원소를 observable 타입으로 감시해서 이후에 각 원소가 변할 때마다 그 변화를 감지할 수 있다.
 
 ```swift
 example(of: "flatMap") {
@@ -143,7 +150,7 @@ example(of: "flatMap") {
 }
 ```
 
-- flatmap은 각 원소를 변형해서 그것을 포함하는 각각의 observable을 반환한다
+- flatmap의 클로저는 변형 역할
 - flapMap은 map과 유사하지만 nil일 경우 skip을 한다. unwrapping.
 - 1. 라이언, 샬롯의 두 학생 인스턴스 생성
 - 2. 학생 타입의 source subject 생성
@@ -190,6 +197,7 @@ ryan.score.value = 95
 ```
 
 - flatMap 연산자는 연산자가 생성한 observable 즉 score를 계속 관찰한다. 이제 샬롯의 점수를 바꿔보면 마찬가지로 바뀐 점수가 출력된다
+- 앞의 observable이 complete할 때까지 기다렸다가 다음 observable을 전달
 - 요약해보면 flatMap 연산자는 각각의 모든 observable의 변화를 계속 관찰한다. 그런데 우리는 가장 최신의 observable의 변화만을 관찰하고 싶을 지도 모른다. 이럴 때는 flatMapLatest 연산자를 사용하자. 이것은 map 연산자와 switchLatest를 합친 연산자이다. switchLatest 연산자는 나중에 배울 것이지만 이것은 가장 최신의 observable의 값만 추적하고 이전의 observable은 구독하지 않는다.
 
 ```swift

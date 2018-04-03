@@ -30,7 +30,8 @@ example(of: "startWith") {
 4
 ```
 
-- concat 연산자는 두 observable을 연결시킨다
+- concat 연산자는 두 observable을 obserble 자체를 연결시킨다
+- O<[Cat]> -> concat -> O<[Cat]>
 
 ```swift
 example(of: "Observable.concat") {
@@ -72,7 +73,8 @@ example(of: "concat") {
 - 이번에는 concat 이 연산자로 사용되었다.
 - concat 연산자는 앞의 배열에 뒤의 배열을 추가한다. 각 배열의 원소가 방출되는 시점과는 관계없이 합친다.
 
-- concatMap: 원소를 변형한 후 합친 observable을 반환
+- concatMap: 원소를 변형한 후 합친 observable을 반환. 순서를 보장
+- flatmap은 순서를 보장하지 않는다
 
 ```swift
 example(of: "concatMap") {
@@ -84,8 +86,12 @@ example(of: "concatMap") {
 
   // 나라명 observable을 도시명 observable로 변형후 합치기
   let observable = Observable.of("Germany", "Spain")
-    .concatMap { country in sequences[country] ?? .empty() }
-
+    //country에 "Germany", "Spain"이 들어간다
+    //클로저의 반환값은 Observable.of("Berlin", "Münich", "Frankfurt"), Observable.of("Madrid", "Barcelona", "Valencia")
+    .concatMap { country in 
+    sequences[country] ?? .empty() }
+    //concatMap이 반환하는 값은 Observable.of("Berlin", "Münich", "Frankfurt", "Madrid", "Barcelona", "Valencia")
+    
   // 3
   _ = observable.subscribe(onNext: { string in
       print(string)
@@ -122,8 +128,9 @@ example(of: "concat one element") {
 - Note: observable을 합칠 때에는 같은 타입의 원소이어야 한다. 그렇지 않으면 컴파일 에러가 발생한다
 
 ## Merging
-- merge: observable의 모든 원소를 합한 새로운 observable 반환
+- merge: observable의 모든 원소 자체를 순서대로 나열하여 새로운 observable 반환
 - 각 원소들이 방출되는 순서대로 합친다
+- O<O<[Event]>> -> merge -> O<[Event]>
 
 ```swift
 example(of: "merge") {
@@ -168,7 +175,7 @@ Left: Frankfurt
 ``` 
 
 ## combining elements
-- combineLatest: observable의 모든 최신원소를 resultSelector 연산을 통해 합친 후 그것을 포함하는 observable을 반환
+- combineLatest: 두 observable의 각 최신원소를 합쳐서 반환
 - observable이 원소를 방출할 때마다 클로저 호출
 - 합쳐질 observable이 모두 원소를 하나 방출하기 전까지는 아무일도 발생하지 않는다
 - result selector를 사용하면 서로 다른 타입도 합칠 수 있는 연산자가 된다
@@ -236,7 +243,7 @@ example(of: "combine user choice and value") {
 }
 ```
 
-- zip 연산자: left observable이 complete 되어서 right observable은 Vieena를 방출하기 전에 complete 된다 indexed sequencing 이라고 한다
+- zip 연산자: 두 observable의 원소가 짝을 지어서 합쳐저서 반환
 
 ```swift
 example(of: "zip") {
@@ -249,7 +256,7 @@ example(of: "zip") {
   let left: Observable<Weather> = Observable.of(.sunny, .cloudy, .cloudy, .sunny)
   let right = Observable.of("Lisbon", "Copenhagen", "London", "Madrid", "Vienna")
   
-  //합칠 때 쌍이 맞아야 되는건가
+  //모든 observable의 원소가 들어왔을 때 비로소 onNext로 전달
   let observable = Observable.zip(left, right) { weather, city in
     return "It's \(weather) in \(city)"
   }
@@ -427,7 +434,8 @@ example(of: "reduce") {
 25
 ```
 
-- scan: reduce는 최종 결과값만 포함하는 반면, scan은 각 단계의 결과값을 모두 포함한다
+- scan: reduce는 최종 결과값만 포함하는 반면, scan은 각 단계의 결과값을 모두 포함한다. progressView 표시할 때 유용
+- (Int, [Cat]) -> scan(rx) -> O<(Int, [Cat])>
 
 ```swift
 example(of: "scan") {

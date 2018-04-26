@@ -1,5 +1,4 @@
-# 삼촌[samchon](https://itunes.apple.com/us/developer/junwoo-park/id1347806823?mt=8)
-의 개발 블로그 
+# 삼촌 [samchon](https://itunes.apple.com/us/developer/junwoo-park/id1347806823?mt=8)의 개발 블로그 
 
 
 ## Project source
